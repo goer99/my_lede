@@ -129,6 +129,10 @@ jobs:
       run: |
         cd openwrt/bin/targets/*/*
         rm -rf packages
+        
+        # 所有固件加起来文件太大，超出github限额（500M），无法上传，所以下面先删除UEFI固件，如果需要UEFI固件，则需要注释掉此句，并删除另外一个固件
+        rm -rf *combined-efi*
+        
         echo "::set-env name=FIRMWARE::$PWD"
         echo "::set-output name=status::success"
 
