@@ -134,7 +134,7 @@ jobs:
         
         # 所有固件加起来文件太大，超出github限额（500M），无法上传，所以下面先删除UEF和rootfs固件，如果需要某固件，则需要删除另外的固件
         rm -rf *combined-efi*
-        rm -rf *rootfs*     
+        #rm -rf *rootfs*     
         ls -lh
 
         echo "::set-env name=FIRMWARE::$PWD"
