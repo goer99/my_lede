@@ -21,8 +21,8 @@ on:
   #    - '.config'
   schedule:
     - cron: 0 0 22 * *
-  watch:
-    types: started
+  #watch:
+  #  types: started
   workflow_dispatch:  
 
 
