@@ -27,7 +27,7 @@ on:
 
 
 env:
-  REPO_URL: https://github.com/lorttl/lean-lede-Lienol-statble
+  REPO_URL: https://github.com/Lienol/lean-lede
   REPO_BRANCH: mod
   FEEDS_CONF: feeds.conf.default
   CONFIG_FILE: .config
