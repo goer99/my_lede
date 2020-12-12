@@ -24,7 +24,7 @@ echo "src-git helloworld https://github.com/fw876/helloworld" >> feeds.conf.defa
 # add passwall packages to feeds
 echo "src-git lienol2 https://github.com/Lienol/openwrt-package" >> feeds.conf.default
 echo "src-git laohu https://github.com/huchanghui123/Lienol-openwrt-packages-backup" >> feeds.conf.default
-echo "src-git trojan-go https://github.com/frainzy1477/luci-app-trojan.git" >> feeds.conf.default
+echo "src-git trojan_go https://github.com/frainzy1477/luci-app-trojan.git" >> feeds.conf.default
 #echo "src-git kenzo https://github.com/kenzok8/openwrt-packages" >> feeds.conf.default
 #echo "src-git small https://github.com/kenzok8/small" >> feeds.conf.default
 
