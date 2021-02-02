@@ -18,6 +18,8 @@ jobs:
   del_runs:
     runs-on: ubuntu-latest
     if: github.event.repository.owner.id == github.event.sender.id
+    #if: github.event_name == 'schedule' || github.event.action == 'run'
+      
     steps:
       - name: Delete workflow runs
         uses: goer99/delete-workflow-runs@main
