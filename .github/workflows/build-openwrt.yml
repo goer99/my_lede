@@ -131,6 +131,16 @@ jobs:
       run: |
         cd openwrt/bin/targets/*/*
         ls -lh 
+        rm -rf packages && mkdir packages
+        # 根据自己需要删除不需要的固件格式和不必要文件，例如esxi格式的固件等
+        find -name "*esxi-flat.vmdk*" | xargs -i mv -f {} packages
+        find -name "*kernel.bin*" | xargs -i mv -f {} packages
+        find -name "*.manifest*" | xargs -i mv -f {} packages
+        find -name "*vmlinuz*" | xargs -i mv -f {} packages
+        find -name "*esxi.vmdk*" | xargs -i mv -f {} packages
+        find -name "*buildinfo*" | xargs -i mv -f {} packages
+        find -name "*json*" | xargs -i mv -f {} packages
+        find -name "*sha256sums*" | xargs -i mv -f {} packages
         rm -rf packages
         ls -lh
         
@@ -146,7 +156,43 @@ jobs:
       uses: actions/upload-artifact@main
       if: steps.organize.outputs.status == 'success' && !cancelled()
       with:
-        name: OpenWrt_firmware_my_lede_trojan_go${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
+        name: OpenWrt_firmware_${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
         path: ${{ env.FIRMWARE }}
+    - name: 创建发布标签
+      id: tag
+      if: env.UPLOAD_RELEASE == 'true' && !cancelled()
+      run: |
+        echo "release_tag=${{ env.TAG_TIME }}" >> $GITHUB_OUTPUT
+        touch release.txt
+        echo "OpenWrt_ X86_64（支持ipv6）" >> release.txt
+        echo "管理地址：192.168.1.1" >> release.txt
+        echo "默认密码：password" >> release.txt
+        echo "插件清单：ShadowSocksR Plus+, Passwall" >> release.txt
+        echo "status=success" >> $GITHUB_OUTPUT
 
+    - name: 发布新版固件
+      uses: softprops/action-gh-release@v2
+      if: steps.tag.outputs.status == 'success' && !cancelled()
+      env:
+        GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+      with:
+        name: ${{ env.FILE_TIME }} -OpenWrt
+        tag_name: ${{ steps.tag.outputs.release_tag }}
+        body_path: release.txt
+        files: ${{ env.FIRMWARE }}/* 
+
+    - name: 清理编译流程
+      uses: Mattraks/delete-workflow-runs@main
+      with:
+        retain_days: 30
+        keep_minimum_runs: 6
+
+    - name: 删除旧版固件
+      uses: dev-drprasad/delete-older-releases@master
+      if: env.UPLOAD_RELEASE == 'true' && !cancelled()
+      with:
+        keep_latest: 10
+        delete_tags: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
