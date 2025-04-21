@@ -38,6 +38,7 @@ env:
   UPLOAD_FIRMWARE: true
   UPLOAD_COWTRANSFER: false
   UPLOAD_WETRANSFER: false
+  UPLOAD_RELEASE: true
   TZ: Asia/Shanghai
 
 jobs:
@@ -170,7 +171,7 @@ jobs:
         rm -rf packages
         ls -lh
         
-        #若所有固件加起来文件太大，超出github限额（1000M），则无法上传，所以可以选择删除某些固件，例如UEFI和rootfs固件
+        #若所有固件加起来文件太大，超出github限额（1000M），则无法上传，所以可以选择删除某些固件，例如UEFI或rootfs固件
         #rm -rf *combined-efi*
         #rm -rf *rootfs*     
         #ls -lh
@@ -184,6 +185,7 @@ jobs:
       with:
         name: OpenWrt_firmware_${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
         path: ${{ env.FIRMWARE }}
+        
     - name: 创建发布标签
       id: tag
       if: env.UPLOAD_RELEASE == 'true' && !cancelled()
