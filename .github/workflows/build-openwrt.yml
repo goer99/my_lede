@@ -187,7 +187,7 @@ jobs:
       uses: actions/upload-artifact@main
       if: steps.organize.outputs.status == 'success' && !cancelled()
       with:
-        name: OpenWrt_firmware_${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
+        name: my_lede_${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
         path: ${{ env.FIRMWARE }}
         
     - name: 创建发布标签
